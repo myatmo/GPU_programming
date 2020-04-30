@@ -1,0 +1,71 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <mpi.h>
+#include <math.h>
+
+int HQuicksort(int *Abuf, int *lenA,  int *list, int N, MPI_Comm comm) {
+/*--------------------
+ Most of  the lab2  assignment will consist  of writing  this function.
+ Right now,  it is set  to just print ``nothing  done" and exit.  It is
+ provided so you can compile and run the pgm - but the numbers will not
+ be sorted.
+-------------------- */
+  // Abuf = local array
+  //list = list of pivots  list from top to bottom of tree.
+  //size limit for local buffers
+  int myid, nprocs, n, name_len;
+  int ncub;
+  char proc_name[MPI_MAX_PROCESSOR_NAME];
+  MPI_Status status;
+
+  //get myid (rank)
+  MPI_Comm_rank(comm, &myid);
+  //get size
+  MPI_Comm_size(comm, &nprocs);
+  // Probe for an incoming message from PE zero
+  //MPI_Probe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+  //MPI_Get_count(&status, MPI_INT, &ncount);
+  //src = status.MPI_SOURCE;
+  //Tag = status.MPI_TAG;
+
+  MPI_Get_processor_name(proc_name, &name_len);
+  printf("from processor %d out of %d, executing on %s\n", myid, nprocs, proc_name);
+  n = N/nprocs;
+  lenA = Abuf;
+  printf("N: %d nproc: %d n: %d lenA %d \n", N, nprocs, n, *lenA);
+  //printf("lenA: %d Abuf: %d \n", lenA, Abuf);
+  //for(int i=0; i<n;i++)
+
+  //get ncub so that 2^ncub = size
+  ncub = log2(nprocs);
+  printf("ncub %d \n", ncub);
+
+  for (int i=0;i<n;i++)
+    printf("value from hq: %d \n", *Abuf++);
+  for (int i=0;i<nprocs-1;i++)
+    printf("value from hq: %d \n", *list++);
+  for(int j=ncub; j>0; j--){
+    // tricky !
+    int i = 0;
+    int piv = list[i];
+    //printf("ncub %d ", j);
+  // [xxxxxxxxxxxxxxxxx]
+  //         ^ sp
+  // one while loop [array is sorted]
+  //find split point in local buffer Abuf
+
+  //find myid partner in exchance
+  //if(xxx){
+  //send Abuf[xxx] to
+  //receive(xxx)
+  //merge}
+  //else{
+  //send(..._
+  //receive
+  //merge(...)
+  }
+
+
+  return(0);
+ }
